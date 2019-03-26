@@ -2,16 +2,14 @@
 # Robyn Murray      3.25.19
 # Version 1
 
-
-#######################################################################
 # import modules
-import sys
-
 import pygame
 
 from settings import Settings
 from ship import Ship
+import game_functions as gf     # alias for game functions
 
+#######################################################################
 # create a function to run the game
 def run_game():
     # init game, settings, and create screen object
@@ -27,16 +25,9 @@ def run_game():
     while True:
         
         # watch for keyboard/mouse events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        
-        # redraw the screen during each pass through loop
-        screen.fill(ai_settings.bg_color)
-        ship.blitme()
-        
-        # make most recent screen visible for smooth movement
-        pygame.display.flip()
+        gf.check_events()
+        # update screen and send to new screen
+        gf.screen_update(ai_settings, screen, ship)
         
 # call the run game function
 run_game()
