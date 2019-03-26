@@ -19,13 +19,15 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
     
     #Create a ship
-    ship = Ship(screen)
+    ship = Ship(ai_settings, screen)
     
     # start main While loop for the game
     while True:
         
         # watch for keyboard/mouse events
-        gf.check_events()
+        gf.check_events(ship)
+        # update ship object
+        ship.update()
         # update screen and send to new screen
         gf.screen_update(ai_settings, screen, ship)
         
