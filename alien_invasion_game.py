@@ -4,7 +4,7 @@
 
 # import modules
 import pygame
-
+from pygame.sprite import Group
 from settings import Settings
 from ship import Ship
 import game_functions as gf     # alias for game functions
@@ -20,16 +20,18 @@ def run_game():
     
     #Create a ship
     ship = Ship(ai_settings, screen)
+    # Create a group to store bullets from sprite
+    bullets = Group()
     
     # start main While loop for the game
     while True:
-        
         # watch for keyboard/mouse events
-        gf.check_events(ship)
+        gf.check_events(ai_settings, screen, ship, bullets)
         # update ship object
         ship.update()
+        bullets.update()
         # update screen and send to new screen
-        gf.screen_update(ai_settings, screen, ship)
+        gf.screen_update(ai_settings, screen, ship, bullets)
         
 # call the run game function
 run_game()
