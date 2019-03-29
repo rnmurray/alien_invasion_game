@@ -47,7 +47,7 @@ def check_events(ai_settings, screen, ship, bullets):
 #######################################################################
 
 #update images on the screen and send to the new screen            
-def screen_update(ai_settings, screen, ship, bullets):
+def screen_update(ai_settings, screen, ship, alien, bullets):
     # fill background of the screen
     screen.fill(ai_settings.bg_color)
     #draw all bullets behind ship and aliens.
@@ -55,6 +55,8 @@ def screen_update(ai_settings, screen, ship, bullets):
         bullet.draw_bullet()
     # add ship to screen
     ship.blitme()
+    # add alien to screen
+    alien.blitme()
     # update the surface to the screen
     pygame.display.flip()
 

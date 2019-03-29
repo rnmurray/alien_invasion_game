@@ -4,7 +4,7 @@
 
 import pygame
 
-# creates a ship class for ship creation and starting position
+# creates a ship class for ship creation and handling
 class Ship():
     
     # make init function including screen
