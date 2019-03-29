@@ -23,13 +23,14 @@ def run_game():
     # Create a group to store bullets from sprite
     bullets = Group()
     
-    # start main While loop for the game
+    # start main loop for the game
     while True:
         # watch for keyboard/mouse events
         gf.check_events(ai_settings, screen, ship, bullets)
         # update ship object
         ship.update()
-        bullets.update()
+        # remove bullets above top of screen and update positions
+        gf.refresh_bullets(bullets)
         # update screen and send to new screen
         gf.screen_update(ai_settings, screen, ship, bullets)
         
