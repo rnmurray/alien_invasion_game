@@ -14,8 +14,8 @@ class Alien(Sprite):
         
         # load the alien ship image and get its rect
         self.graphic = pygame.image.load('images/alien1.png')
-        self.small_graphic = pygame.transform.scale(self.graphic, (75, 55))
-        self.rect = self.small_graphic.get_rect()
+        self.image = pygame.transform.scale(self.graphic, (55, 55))
+        self.rect = self.image.get_rect()
         
         # start alien near top left
         self.rect.x = self.rect.width
@@ -26,4 +26,4 @@ class Alien(Sprite):
      
     # draw alien to screen at current position    
     def blitme(self):
-        self.screen.blit(self.small_graphic, self.rect)
+        self.screen.blit(self.image, self.rect)
