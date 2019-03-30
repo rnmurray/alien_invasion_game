@@ -78,20 +78,42 @@ def fire_bullets(ai_settings, screen, ship, bullets):
         # create new bullet and add
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
-        
-# make a fleet of aliens        
-def make_fleet(ai_settings, screen, aliens):
-    # make alien and get the width
-    alien = Alien(ai_settings, screen)
-    alien_width = alien.rect.width
+
+# calc num of aliens that fit in a row        
+def get_num_aliens_x(ai_settings, alien_width):
     # allow for a margin of one alien each side of screen
     space_avail_x = ai_settings.screen_width - (2 * alien_width)
-    # get number of aliens in row
+    # get number of aliens in row (space of one alien between)
     num_aliens_x = int(space_avail_x / (2 * alien_width))
+    return num_aliens_x
+
+# calc num of rows avail
+def get_num_rows_y(ai_settings, ship_height, alien_height):
+    # subtract 2 alien heights from bottom inc ship and subtract one more from top
+    space_avail_y = (ai_settings.screen_height - (2 * alien_height) - alien_height - ship_height)
+    # space each row by one alien height
+    num_rows_y = int(space_avail_y / (2 * alien_height))
+    return num_rows_y
+
+#make an alien and add it to row
+def make_alien(ai_settings, screen, aliens, alien_num, row_num):
+    alien = Alien(ai_settings, screen)
+    alien_width = alien.rect.width
+    # set postion of x coord of alien
+    alien.x = alien_width + (2 * alien_width * alien_num)
+    alien.rect.x = alien.x
+    alien.rect.y = alien.rect.height + (2 * alien.rect.height * row_num)
+    # add alien to group
+    aliens.add(alien)
+        
+# make a fleet of aliens        
+def make_fleet(ai_settings, screen, ship, aliens):
+    # make alien and get num of aliens that fit in row and num of rows fit in screen
+    alien = Alien(ai_settings, screen)
+    num_aliens_x = get_num_aliens_x(ai_settings, alien.rect.width)
+    num_rows_y = get_num_rows_y(ai_settings, ship.rect.height, alien.rect.height)
     
-    # make first row of aliens
-    for alien_num in range(num_aliens_x):
-        alien = Alien(ai_settings, screen)
-        alien.x = alien_width + (2 * alien_width * alien_num)
-        alien.rect.x = alien.x
-        aliens.add(alien)
+    # make fleet with nested loop
+    for row_num in range(num_rows_y):
+        for alien_num in range(num_aliens_x):
+            make_alien(ai_settings, screen, aliens, alien_num, row_num)
