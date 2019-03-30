@@ -109,6 +109,14 @@ def change_fleet_dir(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_down_velocity
     # change the sign of the direction value
     ai_settings.fleet_dir *= -1
+
+# see when bullets and aliens collide then delete both items    
+def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+    # check for bullets that have hit aliens
+    # if bullet hit, remove bullet and alien
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    #for testing dont kill bullet till after it hits the top
+    #collisions = pygame.sprite.groupcollide(bullets, aliens, False, True)
             
 #####################################################################
 
@@ -126,8 +134,8 @@ def screen_update(ai_settings, screen, ship, aliens, bullets):
     # update the surface to the screen
     pygame.display.flip()
 
-#update bullet positions and remove bullets on screen to preserve memory    
-def refresh_bullets(bullets):
+#update bullet positions and get rid of unneeded ones    
+def refresh_bullets(ai_settings, screen, ship, aliens, bullets):
     #update bullet screen positions
     bullets.update()
     # get rid of bullets that are above the screen
@@ -135,6 +143,15 @@ def refresh_bullets(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
             
+    # call check for collision function to remove hits
+    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+    
+    #check to see if fleet if gone
+    if len(aliens) == 0:
+        # remove all bullets and make new fleet
+        bullets.empty()
+        make_fleet(ai_settings, screen, ship, aliens)
+
 # update pos of all aliens in fleet          
 def refresh_aliens(ai_settings, aliens):
     # check if any aliens hitting edge
