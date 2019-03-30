@@ -36,6 +36,8 @@ def run_game():
         ship.update()
         # remove bullets above top of screen and update positions
         gf.refresh_bullets(bullets)
+        # update alien pos
+        gf.refresh_aliens(ai_settings, aliens)
         # update screen and send to new screen
         gf.screen_update(ai_settings, screen, ship, aliens, bullets)
         

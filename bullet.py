@@ -25,12 +25,12 @@ class Bullet(Sprite):
         
         # give the bullet a color and a speed
         self.color = ai_settings.bullet_color
-        self.speed_multiplier = ai_settings.bullet_speed_multiplier
+        self.velocity_factor = ai_settings.bullet_velocity_factor
         
     # move the bullet up 
     def update(self):
         # get new decimal pos of bullet
-        self.y -= self.speed_multiplier
+        self.y -= self.velocity_factor
         # update bullet rect pos
         self.rect.y = self.y
         

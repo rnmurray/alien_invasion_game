@@ -47,30 +47,6 @@ def check_events(ai_settings, screen, ship, bullets):
 
 #######################################################################
 
-#update images on the screen and send to the new screen            
-def screen_update(ai_settings, screen, ship, aliens, bullets):
-    # fill background of the screen
-    screen.fill(ai_settings.bg_color)
-    #draw all bullets behind ship and aliens.
-    for bullet in bullets.sprites():
-        bullet.draw_bullet()
-    # add ship to screen
-    ship.blitme()
-    # draw alien to screen
-    aliens.draw(screen)
-    # update the surface to the screen
-    pygame.display.flip()
-
-#update bullet positions and remove bullets on screen to preserve memory    
-def refresh_bullets(bullets):
-    #update bullet screen positions
-    bullets.update()
-    
-    # get rid of bullets that are above the screen
-    for bullet in bullets.copy():
-        if bullet.rect.bottom <= 0:
-            bullets.remove(bullet)
-            
 # function that fires allowed number of bullets
 def fire_bullets(ai_settings, screen, ship, bullets):
     # check if number of bullets is less than permitted
@@ -117,3 +93,53 @@ def make_fleet(ai_settings, screen, ship, aliens):
     for row_num in range(num_rows_y):
         for alien_num in range(num_aliens_x):
             make_alien(ai_settings, screen, aliens, alien_num, row_num)
+            
+# check if fleet is hitting edge
+def check_fleet_edge(ai_settings, aliens):
+    #loop through all aliens
+    for alien in aliens.sprites():
+        if alien.check_edge():
+            change_fleet_dir(ai_settings, aliens)
+            break
+    
+# drop fleet down and change direction
+def change_fleet_dir(ai_settings, aliens):
+    # move fleet down by velocity factor
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_down_velocity
+    # change the sign of the direction value
+    ai_settings.fleet_dir *= -1
+            
+#####################################################################
+
+#update images on the screen and send to the new screen            
+def screen_update(ai_settings, screen, ship, aliens, bullets):
+    # fill background of the screen
+    screen.fill(ai_settings.bg_color)
+    #draw all bullets behind ship and aliens.
+    for bullet in bullets.sprites():
+        bullet.draw_bullet()
+    # add ship to screen
+    ship.blitme()
+    # draw alien to screen
+    aliens.draw(screen)
+    # update the surface to the screen
+    pygame.display.flip()
+
+#update bullet positions and remove bullets on screen to preserve memory    
+def refresh_bullets(bullets):
+    #update bullet screen positions
+    bullets.update()
+    # get rid of bullets that are above the screen
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
+            
+# update pos of all aliens in fleet          
+def refresh_aliens(ai_settings, aliens):
+    # check if any aliens hitting edge
+    check_fleet_edge(ai_settings, aliens)
+    # update pos
+    aliens.update()
+            
+            

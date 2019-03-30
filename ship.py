@@ -36,10 +36,10 @@ class Ship():
         # update ships center value
         # check if ship x right edge is less than right edge of screen
         if self.move_right and self.rect.right < self.screen_rect.right:
-            self.center += self.ai_settings.ship_speed_multiplier
+            self.center += self.ai_settings.ship_velocity_factor
         # check if ship x left edge is more than left edge
         if self.move_left and self.rect.left > 0:
-            self.center -= self.ai_settings.ship_speed_multiplier
+            self.center -= self.ai_settings.ship_velocity_factor
         # now update rect object from center   
         self.rect.centerx = self.center
         
