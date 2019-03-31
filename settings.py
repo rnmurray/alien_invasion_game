@@ -27,7 +27,7 @@ class Settings():
         
         # alien ship settings
         self.alien_velocity_factor = 1
-        #self.fleet_down_velocity = 10
-        self.fleet_down_velocity = 50
+        self.fleet_down_velocity = 10
+        #self.fleet_down_velocity = 50
         # fleet direction of 1 reps right; -1 reps left, start right
         self.fleet_dir = 1

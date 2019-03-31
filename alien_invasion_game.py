@@ -7,6 +7,7 @@ import pygame
 from pygame.sprite import Group
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 import game_functions as gf     # alias for game functions
 
@@ -19,6 +20,7 @@ def run_game():
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
     
+    play_button = Button(ai_settings, screen, "Play")
     stats = GameStats(ai_settings)
     
     #Create a ship
@@ -34,7 +36,7 @@ def run_game():
     # start main loop for the game
     while True:
         # watch for keyboard/mouse events
-        gf.check_events(ai_settings, screen, ship, bullets)
+        gf.check_events(ai_settings, screen, stats, play_button, ship, bullets)
         #see if game is still active
         if stats.game_active:
             # update ship object
@@ -44,7 +46,7 @@ def run_game():
             # update alien pos
             gf.refresh_aliens(ai_settings, stats, screen, ship, aliens, bullets)
         # update screen and send to new screen
-        gf.screen_update(ai_settings, screen, ship, aliens, bullets)
+        gf.screen_update(ai_settings, screen, stats, ship, aliens, bullets, play_button)
         
 # call the run game function
 run_game()

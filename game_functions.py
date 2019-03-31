@@ -34,10 +34,13 @@ def check_keyup(event, ship):
         ship.move_left = False
 
 # create a function to respond to keyboard and mouse events
-def check_events(ai_settings, screen, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
         # check for keyboard down press
         elif event.type == pygame.KEYDOWN:
             check_keydown(event, ai_settings, screen, ship, bullets)
@@ -45,6 +48,12 @@ def check_events(ai_settings, screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup(event, ship)
 
+#check if user clicked on button
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    # mouse was pushed within button rect
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        #activate game
+        stats.game_active = True
 
 #######################################################################
 
@@ -153,7 +162,7 @@ def check_bottom_touch(ai_settings, stats, screen, ship, aliens, bullets):
 #####################################################################
 
 #update images on the screen and send to the new screen            
-def screen_update(ai_settings, screen, ship, aliens, bullets):
+def screen_update(ai_settings, screen, stats, ship, aliens, bullets, play_button):
     # fill background of the screen
     screen.fill(ai_settings.bg_color)
     #draw all bullets behind ship and aliens.
@@ -163,6 +172,9 @@ def screen_update(ai_settings, screen, ship, aliens, bullets):
     ship.blitme()
     # draw alien to screen
     aliens.draw(screen)
+    
+    if not stats.game_active:
+        play_button.draw_button()
     # update the surface to the screen
     pygame.display.flip()
 
