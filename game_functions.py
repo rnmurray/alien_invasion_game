@@ -3,6 +3,7 @@
 # Version 1
 
 import sys
+from time import sleep
 import pygame
 from bullet import Bullet
 from alien import Alien
@@ -117,7 +118,38 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     #for testing dont kill bullet till after it hits the top
     #collisions = pygame.sprite.groupcollide(bullets, aliens, False, True)
-            
+
+# do things when alien hits ship
+def hit_ship(ai_settings, stats, screen, ship, aliens, bullets):
+    #check num of ships
+    if stats.ships_rem > 1:
+        # take away one ship
+        stats.ships_rem -= 1
+    
+        # get rid of all aliens and bullets on screen
+        aliens.empty()
+        bullets.empty()
+    
+        # make a new fleet and center the ship
+        make_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+    
+        # pause game a certain amount of secs
+        sleep(1)
+    # game is over 
+    else:
+        stats.game_active = False
+        
+# check if alien touches bottom of screen
+def check_bottom_touch(ai_settings, stats, screen, ship, aliens, bullets):
+    screen_rect = screen.get_rect()
+    #loop to check all aliens
+    for alien in aliens.sprites():
+        # alien touches bottom
+        if alien.rect.bottom >= screen_rect.bottom:
+            # act as if ship is hit
+            hit_ship(ai_settings, stats, screen, ship, aliens, bullets)
+            break
 #####################################################################
 
 #update images on the screen and send to the new screen            
@@ -153,10 +185,18 @@ def refresh_bullets(ai_settings, screen, ship, aliens, bullets):
         make_fleet(ai_settings, screen, ship, aliens)
 
 # update pos of all aliens in fleet          
-def refresh_aliens(ai_settings, aliens):
+def refresh_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     # check if any aliens hitting edge
     check_fleet_edge(ai_settings, aliens)
     # update pos
     aliens.update()
+    
+    # look if alien hit ship
+    if pygame.sprite.spritecollideany(ship, aliens):
+        hit_ship(ai_settings, stats, screen, ship, aliens, bullets)
+        
+    # look if any alien touches screen bottom
+    check_bottom_touch(ai_settings, stats, screen, ship, aliens, bullets)
+    
             
             

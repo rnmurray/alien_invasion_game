@@ -14,6 +14,7 @@ class Settings():
         
         # ship settings
         self.ship_velocity_factor = 1.5
+        self.ship_limit = 3
         
         # bullet settings
         self.bullet_velocity_factor = 3
@@ -22,10 +23,11 @@ class Settings():
         #self.bullet_width = 300
         self.bullet_height = 15
         self.bullet_color = 60, 60, 60  # dark gray
-        self.bullets_permitted = 3
+        self.bullets_permitted = 4
         
         # alien ship settings
         self.alien_velocity_factor = 1
-        self.fleet_down_velocity = 10
+        #self.fleet_down_velocity = 10
+        self.fleet_down_velocity = 50
         # fleet direction of 1 reps right; -1 reps left, start right
         self.fleet_dir = 1
